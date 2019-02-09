@@ -1,0 +1,30 @@
+{
+  "name": "craft-and-local.api.v3",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/web/index.js",
+  "engines": {
+    "node": "10.15.x"
+  },
+  "scripts": {
+    "start": "node src/web",
+    "start:dev": "nodemon src/web",
+    "test": "npm run test:lint && npm run test:unit",
+    "test:lint": "standard",
+    "test:unit": "tape -r './src/test/unit/setup' 'src/web/**/*.test.js'"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "nodemon": "^1.18.9",
+    "standard": "^12.0.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "ramda": "^0.26.1"
+  }
+}
