@@ -1,8 +1,11 @@
 const { Producer } = require('./model')
 
-const find = async () => {
+const find = async ({ limit }) => {
   try {
-    const results = await Producer.find().exec()
+    const results = await Producer
+      .find()
+      .limit(parseInt(limit, 10))
+      .exec()
 
     return {
       statusCode: 200,
@@ -12,7 +15,7 @@ const find = async () => {
       }
     }
   } catch (error) {
-    throw new Error('Bad request')
+    throw new Error(error.errmsg)
   }
 }
 
