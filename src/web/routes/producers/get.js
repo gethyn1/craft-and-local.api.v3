@@ -1,8 +1,6 @@
 const getProducers = (service) => async (req, res, next) => {
   try {
-    const { limit } = req.query
-
-    const results = await service.producers.find({ limit })
+    const results = await service.producers.find(req.query)
     res.json(results)
   } catch (error) {
     next(error)
