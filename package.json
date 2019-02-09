@@ -26,6 +26,7 @@
     "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "helmet": "^3.15.0",
     "mongoose": "^5.4.10",
     "ramda": "^0.26.1"
   }
