@@ -19,6 +19,7 @@ process.on('SIGINT', () => {
 
 const connectDatabase = (onConnect, config, app) => {
   mongoose.connect(config.environment.MONGODB_URI, { useNewUrlParser: true })
+  mongoose.set('useCreateIndex', true)
   mongoose.connection.on('connected', onConnected(onConnect))
   mongoose.connection.on('error', onError)
   mongoose.connection.on('disconnected', onDisconnected)
