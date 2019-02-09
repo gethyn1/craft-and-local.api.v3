@@ -1,6 +1,5 @@
-const express = require('express')
-const path = require('path')
-
+const bodyParser = require('body-parser')
+const { connectDatabase } = require('./connect-database')
 const { registerRoutes } = require('../routes')
 const { registerErrorHandlers } = require('./error-handlers')
 
@@ -10,13 +9,17 @@ const listen = (config, app) =>
   )
 
 const start = (config, app) => () => {
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: false }))
+
   registerRoutes(config, app)
   registerErrorHandlers(app)
   listen(config, app)
 }
 
 const initialise = (config, app) => {
-  start(config, app)()
+  const startApp = start(config, app)
+  connectDatabase(startApp, config, app)
 }
 
 module.exports = {
