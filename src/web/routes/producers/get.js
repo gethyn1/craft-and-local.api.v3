@@ -7,6 +7,16 @@ const getProducers = (service) => async (req, res, next) => {
   }
 }
 
+const getProducer = (service) => async (req, res, next) => {
+  try {
+    const result = await service.producers.findOne(req.params.userId)
+    res.json(result)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
-  getProducers
+  getProducers,
+  getProducer
 }
