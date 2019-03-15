@@ -2,7 +2,14 @@ const { Producer } = require('./model')
 
 const update = async (userId, producer) => {
   try {
-    const result = await Producer.findOneAndUpdate({ userId }, producer, { new: true })
+    const result = await Producer.findOneAndUpdate(
+      { userId },
+      producer,
+      {
+        new: true,
+        runValidators: true
+      }
+    )
 
     if (!result) {
       throw new Error('No producer found')
