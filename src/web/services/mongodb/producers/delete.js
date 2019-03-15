@@ -1,21 +1,13 @@
 const { Producer } = require('./model')
 
-const findOne = async (userId) => {
+const removeByID = async (id) => {
   try {
-    const result = await Producer
-      .findOne({ userId })
-      .exec()
-
-    if (!result) {
-      throw new Error('No producer found')
-    }
+    await Producer.findByIdAndRemove(id)
 
     return {
       statusCode: 200,
       status: 'success',
-      data: {
-        producer: result
-      }
+      data: {}
     }
   } catch (error) {
     // TO DO: abstract function for creating error messages
@@ -24,5 +16,5 @@ const findOne = async (userId) => {
 }
 
 module.exports = {
-  findOne
+  removeByID
 }
