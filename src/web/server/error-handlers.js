@@ -4,7 +4,8 @@ const logErrors = (err, req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
-  res.status(500)
+  const statusCode = err.statusCode || 500
+  res.status(statusCode)
   res.json({ error: err.message, statusCode: res.statusCode })
 }
 
