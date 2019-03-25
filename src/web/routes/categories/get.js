@@ -7,6 +7,16 @@ const getCategories = (service) => async (req, res, next) => {
   }
 }
 
+const getCategory = (service) => async (req, res, next) => {
+  try {
+    const result = await service.categories.findOne(req.params.id)
+    res.json(result)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
-  getCategories
+  getCategories,
+  getCategory
 }
