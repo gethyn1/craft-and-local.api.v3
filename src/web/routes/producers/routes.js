@@ -10,6 +10,7 @@ const producersRoutes = (config, app) => {
   app.get('/producers/:userId', getProducer(mongoDBService))
 
   app.post('/producers', createProducer(mongoDBService))
+  // TO DO: only allow GET requests by user ID. Update using _id
   app.post('/producers/:userId', updateProducer(mongoDBService))
 
   app.delete('/producers/:id', deleteProducer(mongoDBService))
