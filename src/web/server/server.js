@@ -11,6 +11,7 @@ const listen = (config, app) =>
     `App listening on port ${config.server.PORT}`)
   )
 
+// TO DO: sanitise all incoming data
 const start = (config, app) => () => {
   app.use(helmet())
   app.use(bodyParser.json())
