@@ -26,8 +26,17 @@ const UserSchema = mongoose.Schema({
   }
 })
 
-// Hash password before saving to database
-UserSchema.pre('save', function (next) {
+async function comparePassword (candidatePassword) {
+  try {
+    return argon2.verify(this.password, candidatePassword)
+  } catch (error) {
+    throw new Error('There was an error comparing passwords')
+  }
+}
+
+// TODO test password is hashed, possibly in integration test
+// or see https://github.com/vikpe/mongoose-middleware-test
+function hashPassword (next) {
   const user = this
 
   if (!user.isModified('password')) return next()
@@ -36,20 +45,10 @@ UserSchema.pre('save', function (next) {
     user.password = hash
     next()
   }).catch(err => next(err))
-})
-
-// Compare database password hash with user submitted password
-UserSchema.methods.comparePassword = function (candidatePassword) {
-  return new Promise((resolve, reject) => {
-    argon2.verify(this.password, candidatePassword).then(match => {
-      if (match) {
-        resolve(match)
-      } else {
-        reject(match)
-      }
-    }).catch(err => reject(err))
-  })
 }
+
+UserSchema.pre('save', hashPassword)
+UserSchema.methods.comparePassword = comparePassword
 
 module.exports = {
   User: mongoose.model('User', UserSchema)
