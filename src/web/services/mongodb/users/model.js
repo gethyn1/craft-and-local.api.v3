@@ -34,8 +34,8 @@ async function comparePassword (candidatePassword) {
   }
 }
 
-// TODO test password is hashed, possibly in integration test
-// or see https://github.com/vikpe/mongoose-middleware-test
+// TODO this is tested in integration test but probably better to test here and not return hash in response
+// see https://github.com/vikpe/mongoose-middleware-test
 function hashPassword (next) {
   const user = this
 

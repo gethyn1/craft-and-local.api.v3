@@ -9,16 +9,21 @@
   "scripts": {
     "start": "node src/web",
     "start:dev": "nodemon src/web",
-    "test": "npm run test:lint && npm run test:unit",
+    "test": "npm run test:lint && npm run test:unit && npm run test:integration",
     "test:lint": "standard",
-    "test:unit": "tape -r './src/test/unit/setup' 'src/web/**/*.test.js'"
+    "test:unit": "tape 'src/web/**/*.test.js' | tap-colorize",
+    "test:integration": "tape 'src/web/test/*.integration.test.js' | tap-colorize"
   },
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
+    "mongodb-memory-server": "^5.1.0",
     "nodemon": "^1.18.9",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "sinon": "^7.2.3",
     "standard": "^12.0.1",
+    "tap-colorize": "^1.2.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.2"
   },
