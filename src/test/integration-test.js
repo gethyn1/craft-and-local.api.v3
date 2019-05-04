@@ -2,8 +2,8 @@ const express = require('express')
 const { MongoMemoryServer } = require('mongodb-memory-server')
 const { assocPath } = require('ramda')
 const test = require('tape')
-const server = require('../server')
-const config = require('../../config')
+const server = require('../web/server')
+const config = require('../config')
 
 const integrationTest = (name, testCallback) => {
   const mongoServer = new MongoMemoryServer()

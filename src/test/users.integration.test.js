@@ -37,7 +37,7 @@ integrationTest('Create, reads, updates and deletes user', async (t) => {
     t.equal(createResult.data.user.email, user.email, 'creates user in database')
     t.equal(readResult.data.users.length, 1, 'reads user from database')
     t.equal(updateResult.data.user.email, 'jeremiah@jeremiah.com', 'updates user in database')
-    t.equal(passwordIsHashed, true, 'hstores hashed password in database')
+    t.equal(passwordIsHashed, true, 'stores hashed password in database')
     t.equal(deleteResult.data.users.length, 0, 'deletes user from database')
   } catch (error) {
     t.fail(error)

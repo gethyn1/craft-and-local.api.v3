@@ -12,7 +12,7 @@
     "test": "npm run test:lint && npm run test:unit && npm run test:integration",
     "test:lint": "standard",
     "test:unit": "tape 'src/web/**/*.test.js' | tap-colorize",
-    "test:integration": "tape 'src/web/test/*.integration.test.js' | tap-colorize"
+    "test:integration": "tape 'src/test/**/*.integration.test.js' | tap-colorize"
   },
   "author": "",
   "license": "UNLICENSED",
