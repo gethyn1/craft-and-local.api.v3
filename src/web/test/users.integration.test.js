@@ -1,31 +1,11 @@
-const express = require('express')
-const { MongoMemoryServer } = require('mongodb-memory-server')
 const argon2 = require('argon2')
-const { assocPath } = require('ramda')
-const test = require('tape')
 const request = require('request-promise')
-const server = require('../server')
-const config = require('../../config')
+const { integrationTest } = require('./integration-test')
 
 const uri = 'http://localhost:5000/users'
 const options = { uri, json: true }
-const mongoServer = new MongoMemoryServer()
 
-let testServer
-
-test('Integration test setup', async (t) => {
-  try {
-    const mongoUri = await mongoServer.getConnectionString()
-    const testConfig = assocPath(['environment', 'MONGODB_URI'], mongoUri, config)
-    testServer = await server.initialise(testConfig, express())
-    t.pass('Integration test setup complete')
-  } catch (error) {
-    t.fail('Integration test setup failed', error)
-  }
-  t.end()
-})
-
-test('App create, reads, updates and deletes user', async (t) => {
+integrationTest('Create, reads, updates and deletes user', async (t) => {
   try {
     const user = { email: 'jeremiah@gmail.com', password: 'thisisasecret' }
 
@@ -61,17 +41,6 @@ test('App create, reads, updates and deletes user', async (t) => {
     t.equal(deleteResult.data.users.length, 0, 'deletes user from database')
   } catch (error) {
     t.fail(error)
-  }
-  t.end()
-})
-
-test('Integration test teardown', async (t) => {
-  try {
-    await testServer.close(() => console.log('Test server closed'))
-    await mongoServer.stop()
-    t.pass('Integration teardown complete')
-  } catch (error) {
-    t.fail('Integration test teardown failed', error)
   }
   t.end()
 })
