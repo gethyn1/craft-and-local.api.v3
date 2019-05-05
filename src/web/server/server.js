@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
 
+const { initialiseSession } = require('./initialise-session')
 const { setHeaders } = require('./set-headers')
 const { connectDatabase, disconnectDatabase } = require('./connect-database')
 const { registerRoutes } = require('../routes')
@@ -13,6 +14,7 @@ const listen = (config, app) =>
 
 // TO DO: sanitise all incoming data
 const start = (config, app) => {
+  initialiseSession(app)
   app.use(helmet())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
