@@ -14,7 +14,6 @@ const listen = (config, app) =>
 
 // TO DO: sanitise all incoming data
 const start = (config, app) => {
-  initialiseSession(app)
   app.use(helmet())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
@@ -27,10 +26,15 @@ const start = (config, app) => {
 }
 
 const initialise = async (config, app) => {
-  await connectDatabase(config, app)
-  const server = start(config, app)
-  server.once('close', disconnectDatabase)
-  return server
+  try {
+    const connection = await connectDatabase(config)
+    initialiseSession(connection, config, app)
+    const server = start(config, app)
+    server.once('close', disconnectDatabase)
+    return server
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 module.exports = {

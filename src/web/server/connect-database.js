@@ -14,7 +14,7 @@ process.on('SIGINT', () => {
   })
 })
 
-const connectDatabase = async (config, app) => {
+const connectDatabase = async (config) => {
   // Fix deprecation notice
   mongoose.set('useCreateIndex', true)
   // Fix deprecation notice. Should be removed when updating to Mongoose v6
@@ -23,8 +23,8 @@ const connectDatabase = async (config, app) => {
   mongoose.connection.on('connected', onConnected)
   mongoose.connection.on('error', onError)
   mongoose.connection.on('disconnected', onDisconnected)
-
   await mongoose.connect(config.environment.MONGODB_URI, { useNewUrlParser: true })
+  return mongoose.connection
 }
 
 const disconnectDatabase = () => {

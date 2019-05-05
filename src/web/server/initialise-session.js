@@ -1,8 +1,10 @@
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
-const initialiseSession = (app) => {
+const initialiseSession = (connection, config, app) => {
   const sess = {
-    secret: 'keyboard cat',
+    store: new MongoStore({ mongooseConnection: connection }),
+    secret: config.environment.SESSION_SECRET,
     cookie: {},
     saveUninitialized: false,
     resave: false
