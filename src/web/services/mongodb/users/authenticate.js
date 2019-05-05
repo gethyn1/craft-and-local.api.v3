@@ -1,13 +1,20 @@
 const { User } = require('./model')
 
-const findOne = async (email) => {
+const authenticate = async ({ email, password }) => {
   try {
     const result = await User
       .findOne({ email })
       .exec()
 
     if (!result) {
-      throw new Error('No user found')
+      throw new Error('Authentication failed. No user found')
+    }
+
+    const isMatch = await result.comparePassword(password)
+
+    if (!isMatch) {
+      // TODO allow setting different response codes
+      throw new Error('Authentication failed. Incorrect password.')
     }
 
     return {
@@ -24,5 +31,5 @@ const findOne = async (email) => {
 }
 
 module.exports = {
-  findOne
+  authenticate
 }
