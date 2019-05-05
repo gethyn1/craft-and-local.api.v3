@@ -5,6 +5,7 @@ const test = require('tape')
 const server = require('../web/server')
 const config = require('../config')
 
+// TODO implement test setup that only runs setup and teardown once for all tests
 const integrationTest = (name, testCallback) => {
   const mongoServer = new MongoMemoryServer()
   let testServer
