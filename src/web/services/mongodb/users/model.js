@@ -39,7 +39,9 @@ async function comparePassword (candidatePassword) {
 function hashPassword (next) {
   const user = this
 
-  if (!user.isModified('password')) return next()
+  if (!user.isModified('password')) {
+    return next()
+  }
 
   argon2.hash(user.password).then(hash => {
     user.password = hash
