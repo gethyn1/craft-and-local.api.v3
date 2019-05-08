@@ -1,6 +1,6 @@
 const express = require('express')
 const { MongoMemoryServer } = require('mongodb-memory-server')
-const { assocPath } = require('ramda')
+const { assocPath, path, match, last, toString, compose } = require('ramda')
 const test = require('tape')
 const request = require('request-promise')
 const server = require('../web/server')
@@ -9,8 +9,9 @@ const { create } = require('../web/services/mongodb/users')
 
 const BASE_URL = 'http://localhost:5000'
 const user = { email: 'integration@test.com', password: 'test' }
+const matchCookieString = match(`${config.server.SESSION_ID_NAME}=(.*?);`)
 
-const getSidCookie = response => response.headers['set-cookie'].toString().match(`${config.server.SESSION_ID_NAME}=(.*?);`)[1]
+const getSidCookie = compose(last, matchCookieString, toString, path(['headers', 'set-cookie']))
 
 const makeRequest = (cookieString) => async (options) =>
   request({
