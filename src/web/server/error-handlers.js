@@ -6,7 +6,7 @@ const logErrors = (err, req, res, next) => {
 const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500
   res.status(statusCode)
-  res.json({ error: err.message, statusCode: res.statusCode })
+  res.json({ error: err.message, statusCode })
 }
 
 const registerErrorHandlers = (app) => {

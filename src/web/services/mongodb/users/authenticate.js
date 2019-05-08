@@ -7,17 +7,17 @@ const authenticate = async ({ email, password }) => {
       .exec()
 
     if (!result) {
-      throw new Error('Authentication failed. No user found')
+      throw new Error('No user found')
     }
 
     const isMatch = await result.comparePassword(password)
 
     if (!isMatch) {
-      // TODO allow setting different response codes
-      throw new Error('Authentication failed. Incorrect password.')
+      throw new Error('Incorrect password')
     }
 
     return {
+      // TODO move response http status up to routes
       statusCode: 200,
       status: 'success',
       data: {

@@ -41,7 +41,7 @@ integrationTest('Does not authenticate user with incorrect email', async (t, req
 
     t.fail('Authenticates user with incorrect email')
   } catch (error) {
-    t.equal(error.statusCode, 500, 'Does not authenticate user with incorrect email')
+    t.equal(error.statusCode, 401, 'Does not authenticate user with incorrect email')
   }
   t.end()
 })
@@ -59,7 +59,7 @@ integrationTest('Does not authenticate user with incorrect password', async (t, 
 
     t.fail('Authenticates user with incorrect password')
   } catch (error) {
-    t.equal(error.statusCode, 500, 'Does not authenticate user with incorrect password')
+    t.equal(error.statusCode, 401, 'Does not authenticate user with incorrect password')
   }
   t.end()
 })
