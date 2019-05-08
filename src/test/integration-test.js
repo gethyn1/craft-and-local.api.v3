@@ -5,33 +5,25 @@ const test = require('tape')
 const request = require('request-promise')
 const server = require('../web/server')
 const config = require('../config')
-
 const { create } = require('../web/services/mongodb/users')
 
+const BASE_URL = 'http://localhost:5000'
 const user = { email: 'integration@test.com', password: 'test' }
 
-const options = {
-  method: 'POST',
-  uri: 'http://localhost:5000/authenticate/login',
-  json: true,
-  body: user,
-  resolveWithFullResponse: true
-}
+const getSidCookie = response => response.headers['set-cookie'].toString().match(`${config.server.SESSION_ID_NAME}=(.*?);`)[1]
 
-const getSIDCookie = response => response.headers['set-cookie'].toString().match('connect.sid=(.*?);')[1]
-
-const makeRequest = (cookie) => async (options) => {
-  return request({
+const makeRequest = (cookieString) => async (options) =>
+  request({
     ...options,
+    json: true,
     headers: {
-      Cookie: cookie
+      Cookie: cookieString
     }
   })
-}
 
-// TODO implement test setup that only runs setup and teardown once for all tests
 const integrationTest = (name, testCallback) => {
   const mongoServer = new MongoMemoryServer()
+
   let testServer
   let sessionId
 
@@ -42,8 +34,16 @@ const integrationTest = (name, testCallback) => {
       testServer = await server.initialise(testConfig, express())
 
       await create(user)
-      const authorise = await request(options)
-      sessionId = getSIDCookie(authorise)
+
+      const authenticatedResponse = await request({
+        method: 'POST',
+        uri: `${BASE_URL}/authenticate/login`,
+        json: true,
+        body: user,
+        resolveWithFullResponse: true
+      })
+
+      sessionId = getSidCookie(authenticatedResponse)
 
       t.pass('Integration test setup complete')
     } catch (error) {
@@ -52,7 +52,7 @@ const integrationTest = (name, testCallback) => {
     t.end()
   })
 
-  test(name, async (t) => testCallback(t, makeRequest(`connect.sid=${sessionId}`)))
+  test(name, async (t) => testCallback(t, makeRequest(`${config.server.SESSION_ID_NAME}=${sessionId}`)))
 
   test('Integration test teardown', async (t) => {
     try {

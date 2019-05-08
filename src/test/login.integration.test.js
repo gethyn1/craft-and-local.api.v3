@@ -1,12 +1,12 @@
 const { integrationTest } = require('./integration-test')
 
-const uri = 'http://localhost:5000/authenticate/login'
-const options = { method: 'POST', uri, json: true }
+const BASE_URL = 'http://localhost:5000'
+const uri = `${BASE_URL}/authenticate/login`
 const user = { email: 'jeremiah@gmail.com', password: 'thisisasecret' }
 
 const saveUser = async (request) => request({
-  ...options,
-  uri: 'http://localhost:5000/users',
+  method: 'POST',
+  uri: `${BASE_URL}/users`,
   body: user
 })
 
@@ -16,7 +16,8 @@ integrationTest('Authenticates user with correct details', async (t, request) =>
     t.pass('Succesfully saved user record')
 
     const result = await request({
-      ...options,
+      method: 'POST',
+      uri,
       body: user
     })
 
@@ -33,7 +34,8 @@ integrationTest('Does not authenticate user with incorrect email', async (t, req
     t.pass('Succesfully saved user record')
 
     await request({
-      ...options,
+      method: 'POST',
+      uri,
       body: { ...user, email: 'jeremiah@jeremiah.com' }
     })
 
@@ -50,7 +52,8 @@ integrationTest('Does not authenticate user with incorrect password', async (t, 
     t.pass('Succesfully saved user record')
 
     await request({
-      ...options,
+      method: 'POST',
+      uri,
       body: { ...user, password: 'thisisdifferent' }
     })
 

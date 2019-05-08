@@ -20,9 +20,9 @@ const connectDatabase = async (config) => {
   // Fix deprecation notice. Should be removed when updating to Mongoose v6
   // https://github.com/Automattic/mongoose/issues/6880#issuecomment-435621543
   mongoose.set('useFindAndModify', false)
-  mongoose.connection.on('connected', onConnected)
+  mongoose.connection.once('connected', onConnected)
+  mongoose.connection.once('disconnected', onDisconnected)
   mongoose.connection.on('error', onError)
-  mongoose.connection.on('disconnected', onDisconnected)
   await mongoose.connect(config.environment.MONGODB_URI, { useNewUrlParser: true })
   return mongoose.connection
 }
