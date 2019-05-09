@@ -1,8 +1,8 @@
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
+const cors = require('cors')
 
 const { initialiseSession } = require('./initialise-session')
-const { setHeaders } = require('./set-headers')
 const { connectDatabase, disconnectDatabase } = require('./connect-database')
 const { registerRoutes } = require('../routes')
 const { registerErrorHandlers } = require('./error-handlers')
@@ -18,7 +18,12 @@ const start = (config, app) => {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
 
-  setHeaders(config, app)
+  app.use(cors({
+    origin: config.environment.WEB_APP_ORIGIN,
+    allowedHeaders: 'Content-Type, X-Requested-With',
+    credentials: true
+  }))
+
   registerRoutes(config, app)
   registerErrorHandlers(app)
 

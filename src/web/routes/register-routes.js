@@ -14,7 +14,7 @@ const authenticateUser = (req, res, next) => {
     return next()
   }
 
-  next(wrapError({
+  return next(wrapError({
     message: 'Authentication error',
     statusCode: UNAUTHORIZED
   }))
