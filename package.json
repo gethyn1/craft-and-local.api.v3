@@ -12,7 +12,7 @@
     "test": "npm run test:lint && npm run test:unit && npm run test:integration",
     "test:lint": "standard",
     "test:unit": "tape 'src/web/**/*.test.js' | tap-colorize",
-    "test:integration": "tape 'src/test/**/*.integration.test.js' | tap-colorize"
+    "test:integration": "cross-env USE_CSRF_TOKEN=false tape 'src/test/**/*.integration.test.js' | tap-colorize"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -32,6 +32,8 @@
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.3",
     "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "csurf": "^1.10.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-session": "^1.16.1",

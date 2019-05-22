@@ -1,3 +1,4 @@
+const csrf = require('csurf')
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
 const cors = require('cors')
@@ -14,13 +15,19 @@ const listen = (config, app) =>
 
 // TO DO: sanitise all incoming data
 const start = (config, app) => {
+  // TODO: configure integration tests so this environment variable is not required
+  if (config.environment.USE_CSRF_TOKEN) {
+    app.use(csrf())
+  }
+
   app.use(helmet())
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
 
+  // TODO: only allow application/json content type
   app.use(cors({
     origin: config.environment.WEB_APP_ORIGIN,
-    allowedHeaders: 'Content-Type, X-Requested-With',
+    allowedHeaders: 'Content-Type, X-Requested-With, CSRF-Token',
     credentials: true
   }))
 

@@ -3,6 +3,7 @@ const { UNAUTHORIZED } = require('../http-statuses')
 const { wrapError } = require('../errors')
 
 // TODO move authentication error messages into constants to share with service
+// TODO don't send password in response
 const authenticationErrors = ['No user found', 'Incorrect password']
 
 const isAuthenticationError = includes(__, authenticationErrors)

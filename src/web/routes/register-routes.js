@@ -1,3 +1,4 @@
+const { __, includes, compose, type, equals } = require('ramda')
 const { producersRoutes } = require('./producers')
 const { categoriesRoutes } = require('./categories')
 const { usersRoutes } = require('./users')
@@ -5,8 +6,14 @@ const { authenticateRoutes } = require('./authenticate')
 const { wrapError } = require('./errors')
 const { UNAUTHORIZED } = require('./http-statuses')
 
+const unAuthenticatedRoutes = ['/authenticate/login', '/authenticate/validate']
+
+const isUnauthenticatedRoute = includes(__, unAuthenticatedRoutes)
+
+const isFunction = compose(equals('Function'), type)
+
 const authenticateUser = (req, res, next) => {
-  if (req.path === '/authenticate/login') {
+  if (isUnauthenticatedRoute(req.path)) {
     return next()
   }
 
@@ -20,8 +27,16 @@ const authenticateUser = (req, res, next) => {
   }))
 }
 
+const setCsrfToken = (req, res, next) => {
+  if (isFunction(req.csrfToken)) {
+    res.cookie('XSRF-TOKEN', req.csrfToken())
+  }
+
+  next()
+}
+
 const registerRoutes = (config, app) => {
-  app.all('*', authenticateUser)
+  app.all('*', authenticateUser, setCsrfToken)
 
   producersRoutes(config, app)
   categoriesRoutes(config, app)
