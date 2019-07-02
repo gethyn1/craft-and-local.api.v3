@@ -8,13 +8,7 @@ const findEntityById = (Entity) => async (id) => {
       throw new Error('No entity found for ID')
     }
 
-    return {
-      statusCode: 200,
-      status: 'success',
-      data: {
-        entity
-      }
-    }
+    return entity
   } catch (error) {
     // TO DO: abstract function for creating error messages
     throw new Error(error.errmsg || error.message)

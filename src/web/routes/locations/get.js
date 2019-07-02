@@ -1,7 +1,9 @@
+const { buildSuccessResponse } = require('../build-responses')
+
 const getLocations = (service) => async (req, res, next) => {
   try {
     const results = await service.locations.find(req.query)
-    res.json(results)
+    res.json(buildSuccessResponse(results))
   } catch (error) {
     next(error)
   }
@@ -10,7 +12,7 @@ const getLocations = (service) => async (req, res, next) => {
 const getLocation = (service) => async (req, res, next) => {
   try {
     const result = await service.locations.findById(req.params.id)
-    res.json(result)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }

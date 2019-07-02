@@ -1,16 +1,10 @@
 const findEntities = (Entity) => async () => {
   try {
-    const results = await Entity
+    const entities = await Entity
       .find()
       .exec()
 
-    return {
-      statusCode: 200,
-      status: 'success',
-      data: {
-        entities: results
-      }
-    }
+    return entities
   } catch (error) {
     throw new Error(error.errmsg)
   }
