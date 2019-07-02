@@ -1,4 +1,5 @@
 const { __, includes, compose, type, equals } = require('ramda')
+const { locationsRoutes } = require('./locations')
 const { producersRoutes } = require('./producers')
 const { categoriesRoutes } = require('./categories')
 const { usersRoutes } = require('./users')
@@ -38,6 +39,7 @@ const setCsrfToken = (req, res, next) => {
 const registerRoutes = (config, app) => {
   app.all('*', authenticateUser, setCsrfToken)
 
+  locationsRoutes(config, app)
   producersRoutes(config, app)
   categoriesRoutes(config, app)
   usersRoutes(config, app)

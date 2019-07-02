@@ -1,6 +1,7 @@
 const producers = require('./producers')
 const categories = require('./categories')
 const users = require('./users')
+const locations = require('./locations')
 
 const createMongoDBService = () => ({
   producers: {
@@ -11,6 +12,9 @@ const createMongoDBService = () => ({
   },
   users: {
     ...users
+  },
+  locations: {
+    ...locations
   }
 })
 
