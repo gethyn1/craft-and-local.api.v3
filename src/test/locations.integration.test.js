@@ -6,6 +6,20 @@ const uri = `${BASE_URL}/locations`
 
 integrationTest('Create, reads, updates and deletes location', async (t, request) => {
   try {
+    // Seed database
+    await request({
+      method: 'POST',
+      uri,
+      body: {
+        coordinates: [123, 456],
+        producer: mongoose.Types.ObjectId(),
+        categories: [mongoose.Types.ObjectId()],
+        address: 'number 1, far away from here, W1A 8FF',
+        alias: 'the name of the place'
+      }
+    })
+
+    // Create location for tests
     const producerId = mongoose.Types.ObjectId()
     const categoryId = mongoose.Types.ObjectId()
 
@@ -38,8 +52,10 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     // Read locations
     const readResult = await request({ uri })
 
-    t.equal(readResult.data.entities.length, 1, 'reads correct number of locations from database')
-    t.equal(readResult.data.entities[0].producer, `${producerId}`, 'location is returned from database')
+    const entityExists = id => entity => entity._id === `${id}`
+
+    t.equal(readResult.data.entities.length, 2, 'reads correct number of locations from database')
+    t.equal(readResult.data.entities.some(entityExists(createResult.data.entity._id)), true, 'created location is returned from in list database')
 
     // Read location
     const readOneResult = await request({
@@ -77,7 +93,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
 
     const deleteResult = await request({ uri })
 
-    t.equal(deleteResult.data.entities.length, 0, 'deletes location from database')
+    t.equal(deleteResult.data.entities.length, 1, 'deletes location from database')
   } catch (error) {
     t.fail(error)
   }
