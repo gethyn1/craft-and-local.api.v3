@@ -1,7 +1,9 @@
-const findEntities = (Entity) => async () => {
+const setConditionsNoop = () => ({})
+
+const findEntities = (Entity, setConditions = setConditionsNoop) => async (query) => {
   try {
     const entities = await Entity
-      .find()
+      .find(setConditions(query))
       .exec()
 
     return entities

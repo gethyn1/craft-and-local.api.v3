@@ -4,6 +4,8 @@ const { integrationTest } = require('./integration-test')
 const BASE_URL = 'http://localhost:5000'
 const uri = `${BASE_URL}/locations`
 
+const entityExists = id => entity => entity._id === `${id}`
+
 integrationTest('Create, reads, updates and deletes location', async (t, request) => {
   try {
     // Seed database
@@ -24,7 +26,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     const categoryId = mongoose.Types.ObjectId()
 
     const location = {
-      coordinates: [123, 456],
+      coordinates: [789, 111],
       producer: producerId,
       categories: [categoryId],
       address: 'number 5, remote place, bb7 9pz',
@@ -40,7 +42,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
 
     const expectedLocation = {
       type: 'Point',
-      coordinates: [123, 456]
+      coordinates: [789, 111]
     }
 
     t.deepEqual(createResult.data.entity.location, expectedLocation, 'creates location in database with correct location')
@@ -51,11 +53,11 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
 
     // Read locations
     const readResult = await request({ uri })
-
-    const entityExists = id => entity => entity._id === `${id}`
+    const createdLocationId = createResult.data.entity._id
+    const isCreatedLocation = entityExists(createdLocationId)
 
     t.equal(readResult.data.entities.length, 2, 'reads correct number of locations from database')
-    t.equal(readResult.data.entities.some(entityExists(createResult.data.entity._id)), true, 'created location is returned from in list database')
+    t.equal(readResult.data.entities.some(isCreatedLocation), true, 'created location is returned from in list database')
 
     // Read location
     const readOneResult = await request({
@@ -63,6 +65,16 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     })
 
     t.equal(readOneResult.data.entity.producer, `${producerId}`, 'reads single location from database')
+
+    // Read location by filters
+    // Note: not currently possible to test latlng an mindistance filters
+    const categoryFilterResult = await request({ uri: `${uri}?categories=${categoryId}` })
+    t.equal(categoryFilterResult.data.entities.length, 1, 'it gets the correct number of locations for category')
+    t.equal(isCreatedLocation(categoryFilterResult.data.entities[0]), true, 'it gets the correct location for category')
+
+    const excludeFilterResult = await request({ uri: `${uri}?exclude=${createdLocationId}` })
+    t.equal(excludeFilterResult.data.entities.length, 1, 'it gets the correct number of locations for exclude')
+    t.equal(isCreatedLocation(excludeFilterResult.data.entities[0]), false, 'it excludes the correct location')
 
     // Update location
     const updateResult = await request({
