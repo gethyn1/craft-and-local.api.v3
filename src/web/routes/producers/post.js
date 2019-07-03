@@ -1,7 +1,9 @@
+const { buildSuccessResponse } = require('../build-responses')
+
 const createProducer = (service) => async (req, res, next) => {
   try {
     const result = await service.producers.create(req.body)
-    res.json(result)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }
@@ -9,8 +11,8 @@ const createProducer = (service) => async (req, res, next) => {
 
 const updateProducer = (service) => async (req, res, next) => {
   try {
-    const result = await service.producers.update(req.params.userId, req.body)
-    res.json(result)
+    const result = await service.producers.update({ userId: req.params.userId }, req.body)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }
