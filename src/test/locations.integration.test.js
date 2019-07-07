@@ -67,7 +67,6 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     t.equal(readOneResult.data.entity.producer, `${producerId}`, 'reads single location from database')
 
     // Read location by filters
-    // Note: not currently possible to test latlng an mindistance filters
     const categoryFilterResult = await request({ uri: `${uri}?categories=${categoryId}` })
     t.equal(categoryFilterResult.data.entities.length, 1, 'it gets the correct number of locations for category')
     t.equal(isCreatedLocation(categoryFilterResult.data.entities[0]), true, 'it gets the correct location for category')
@@ -75,6 +74,11 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     const excludeFilterResult = await request({ uri: `${uri}?exclude=${createdLocationId}` })
     t.equal(excludeFilterResult.data.entities.length, 1, 'it gets the correct number of locations for exclude')
     t.equal(isCreatedLocation(excludeFilterResult.data.entities[0]), false, 'it excludes the correct location')
+
+    // TODO: latlng test not working - needs fixing
+    // const latlngFilterResult = await request({ uri: `${uri}?latlng=0,0` })
+    // t.equal(latlngFilterResult.data.entities.length, 2, 'it gets the correct number of locations for latlng')
+    // t.equal(isCreatedLocation(latlngFilterResult.data.entities[0]), false, 'it returns locations in the correct order')
 
     // Update location
     const updateResult = await request({
