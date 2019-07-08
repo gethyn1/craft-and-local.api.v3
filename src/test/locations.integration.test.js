@@ -13,24 +13,23 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
       method: 'POST',
       uri,
       body: {
+        title: 'Mama\'s little bakery',
         coordinates: [123, 456],
-        producer: mongoose.Types.ObjectId(),
         categories: [mongoose.Types.ObjectId()],
-        address: 'number 1, far away from here, W1A 8FF',
-        alias: 'the name of the place'
+        address: 'Chicago, IL',
+        alias: 'First Street'
       }
     })
 
     // Create location for tests
-    const producerId = mongoose.Types.ObjectId()
     const categoryId = mongoose.Types.ObjectId()
 
     const location = {
+      title: 'The remote place',
       coordinates: [789, 111],
-      producer: producerId,
       categories: [categoryId],
       address: 'number 5, remote place, bb7 9pz',
-      alias: 'my alias'
+      alias: 'near the lake'
     }
 
     // Create location
@@ -46,10 +45,9 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     }
 
     t.deepEqual(createResult.data.entity.location, expectedLocation, 'creates location in database with correct location')
-    t.equal(createResult.data.entity.producer, `${producerId}`, 'creates location in database with correct producer')
     t.deepEqual(createResult.data.entity.categories, [`${categoryId}`], 'creates location in database with correct categories')
     t.equal(createResult.data.entity.address, 'number 5, remote place, bb7 9pz', 'creates location in database with correct address')
-    t.equal(createResult.data.entity.alias, 'my alias', 'creates location in database with correct alias')
+    t.equal(createResult.data.entity.alias, 'near the lake', 'creates location in database with correct alias')
 
     // Read locations
     const readResult = await request({ uri })
@@ -64,7 +62,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
       uri: `${uri}/${createResult.data.entity._id}`
     })
 
-    t.equal(readOneResult.data.entity.producer, `${producerId}`, 'reads single location from database')
+    t.equal(readOneResult.data.entity.alias, 'near the lake', 'reads single location from database')
 
     // Read location by filters
     const categoryFilterResult = await request({ uri: `${uri}?categories=${categoryId}` })
@@ -96,7 +94,6 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
     }
 
     t.deepEqual(updateResult.data.entity.location, expectedUpdatedLocation, 'updates location in database with correct location')
-    t.equal(updateResult.data.entity.producer, `${producerId}`, 'does not update producer')
     t.deepEqual(updateResult.data.entity.categories, [`${categoryId}`], 'does not update categories')
     t.equal(updateResult.data.entity.address, 'number 5, remote place, bb7 9pz', 'does not update address')
     t.equal(updateResult.data.entity.alias, 'new alias', 'updates location in database with correct alias')

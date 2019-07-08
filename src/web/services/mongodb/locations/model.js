@@ -17,16 +17,41 @@ const pointSchema = new mongoose.Schema({
 })
 
 const LocationSchema = mongoose.Schema({
-  producer: { type: mongoose.Schema.Types.ObjectId, ref: 'Producer' },
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
   location: {
     type: pointSchema,
     required: true
   },
+  title: {
+    type: String,
+    required: 'Title is required'
+  },
+  description: {
+    type: String
+  },
+  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
   address: {
     type: String
   },
   alias: {
+    type: String
+  },
+  instagramHandle: {
+    type: String,
+    default: ''
+  },
+  twitterHandle: {
+    type: String,
+    default: ''
+  },
+  email: {
+    type: String,
+    trim: true,
+    match: [/.+@.+\..+/, 'Please use a valid email address']
+  },
+  telephone: {
+    type: String
+  },
+  website: {
     type: String
   }
 })
