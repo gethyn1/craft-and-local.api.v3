@@ -1,9 +1,6 @@
 const buildSuccessResponse = (result) => ({
-  statusCode: 200,
-  status: 'success',
-  data: {
-    [Array.isArray(result) ? 'entities' : 'entity']: result
-  }
+  status: 'ok',
+  data: result
 })
 
 module.exports = {
