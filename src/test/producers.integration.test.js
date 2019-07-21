@@ -3,7 +3,7 @@ const { integrationTest } = require('./integration-test')
 const BASE_URL = 'http://localhost:5000'
 const uri = `${BASE_URL}/producers`
 
-const entityExists = id => entity => entity._id === `${id}`
+const entityExists = id => entity => entity.id === `${id}`
 
 integrationTest('Create, reads, updates and deletes producer', async (t, request) => {
   try {
@@ -30,45 +30,45 @@ integrationTest('Create, reads, updates and deletes producer', async (t, request
       body: producer
     })
 
-    t.equal(createResult.data.entity.userId, 'my_second_producer', 'creates producer in database with correct user ID')
-    t.equal(createResult.data.entity.title, 'My second producer', 'creates producer in database with correct title')
+    t.equal(createResult.data.userId, 'my_second_producer', 'creates producer in database with correct user ID')
+    t.equal(createResult.data.title, 'My second producer', 'creates producer in database with correct title')
 
     // Read producers
     const readResult = await request({ uri })
-    const createdProducerId = createResult.data.entity._id
+    const createdProducerId = createResult.data.id
     const isCreatedProducer = entityExists(createdProducerId)
 
-    t.equal(readResult.data.entities.length, 2, 'reads correct number of producers from database')
-    t.equal(readResult.data.entities.some(isCreatedProducer), true, 'created producer is returned in list from database')
+    t.equal(readResult.data.length, 2, 'reads correct number of producers from database')
+    t.equal(readResult.data.some(isCreatedProducer), true, 'created producer is returned in list from database')
 
     // Read producer
     const readOneResult = await request({
-      uri: `${uri}/${createResult.data.entity.userId}`
+      uri: `${uri}/${createResult.data.userId}`
     })
 
-    t.equal(readOneResult.data.entity.userId, 'my_second_producer', 'reads single producer from database')
+    t.equal(readOneResult.data.userId, 'my_second_producer', 'reads single producer from database')
 
     // Update producer
     const updateResult = await request({
-      uri: `${uri}/${createResult.data.entity.userId}`,
+      uri: `${uri}/${createResult.data.userId}`,
       method: 'POST',
       body: {
         title: 'Updated second user'
       }
     })
 
-    t.equal(updateResult.data.entity.title, 'Updated second user', 'updates producer title')
-    t.equal(updateResult.data.entity.userId, 'my_second_producer', 'does not update producer user ID')
+    t.equal(updateResult.data.title, 'Updated second user', 'updates producer title')
+    t.equal(updateResult.data.userId, 'my_second_producer', 'does not update producer user ID')
 
     // Delete location
     await request({
-      uri: `${uri}/${createResult.data.entity._id}`,
+      uri: `${uri}/${createResult.data.id}`,
       method: 'DELETE'
     })
 
     const deleteResult = await request({ uri })
 
-    t.equal(deleteResult.data.entities.length, 1, 'deletes location from database')
+    t.equal(deleteResult.data.length, 1, 'deletes location from database')
   } catch (error) {
     t.fail(error)
   }

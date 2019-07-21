@@ -4,7 +4,7 @@ const { integrationTest } = require('./integration-test')
 const BASE_URL = 'http://localhost:5000'
 const uri = `${BASE_URL}/locations`
 
-const entityExists = id => entity => entity._id === `${id}`
+const entityExists = id => entity => entity.id === `${id}`
 
 integrationTest('Create, reads, updates and deletes location', async (t, request) => {
   try {
@@ -44,43 +44,43 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
       coordinates: [789, 111]
     }
 
-    t.deepEqual(createResult.data.entity.location, expectedLocation, 'creates location in database with correct location')
-    t.deepEqual(createResult.data.entity.categories, [`${categoryId}`], 'creates location in database with correct categories')
-    t.equal(createResult.data.entity.address, 'number 5, remote place, bb7 9pz', 'creates location in database with correct address')
-    t.equal(createResult.data.entity.alias, 'near the lake', 'creates location in database with correct alias')
+    t.deepEqual(createResult.data.location, expectedLocation, 'creates location in database with correct location')
+    t.deepEqual(createResult.data.categories, [`${categoryId}`], 'creates location in database with correct categories')
+    t.equal(createResult.data.address, 'number 5, remote place, bb7 9pz', 'creates location in database with correct address')
+    t.equal(createResult.data.alias, 'near the lake', 'creates location in database with correct alias')
 
     // Read locations
     const readResult = await request({ uri })
-    const createdLocationId = createResult.data.entity._id
+    const createdLocationId = createResult.data.id
     const isCreatedLocation = entityExists(createdLocationId)
 
-    t.equal(readResult.data.entities.length, 2, 'reads correct number of locations from database')
-    t.equal(readResult.data.entities.some(isCreatedLocation), true, 'created location is returned from in list database')
+    t.equal(readResult.data.length, 2, 'reads correct number of locations from database')
+    t.equal(readResult.data.some(isCreatedLocation), true, 'created location is returned from list in database')
 
     // Read location
     const readOneResult = await request({
-      uri: `${uri}/${createResult.data.entity._id}`
+      uri: `${uri}/${createResult.data.id}`
     })
 
-    t.equal(readOneResult.data.entity.alias, 'near the lake', 'reads single location from database')
+    t.equal(readOneResult.data.alias, 'near the lake', 'reads single location from database')
 
     // Read location by filters
     const categoryFilterResult = await request({ uri: `${uri}?categories=${categoryId}` })
-    t.equal(categoryFilterResult.data.entities.length, 1, 'it gets the correct number of locations for category')
-    t.equal(isCreatedLocation(categoryFilterResult.data.entities[0]), true, 'it gets the correct location for category')
+    t.equal(categoryFilterResult.data.length, 1, 'it gets the correct number of locations for category')
+    t.equal(isCreatedLocation(categoryFilterResult.data[0]), true, 'it gets the correct location for category')
 
     const excludeFilterResult = await request({ uri: `${uri}?exclude=${createdLocationId}` })
-    t.equal(excludeFilterResult.data.entities.length, 1, 'it gets the correct number of locations for exclude')
-    t.equal(isCreatedLocation(excludeFilterResult.data.entities[0]), false, 'it excludes the correct location')
+    t.equal(excludeFilterResult.data.length, 1, 'it gets the correct number of locations for exclude')
+    t.equal(isCreatedLocation(excludeFilterResult.data[0]), false, 'it excludes the correct location')
 
     // TODO: latlng test not working - needs fixing
     // const latlngFilterResult = await request({ uri: `${uri}?latlng=0,0` })
-    // t.equal(latlngFilterResult.data.entities.length, 2, 'it gets the correct number of locations for latlng')
-    // t.equal(isCreatedLocation(latlngFilterResult.data.entities[0]), false, 'it returns locations in the correct order')
+    // t.equal(latlngFilterResult.data.length, 2, 'it gets the correct number of locations for latlng')
+    // t.equal(isCreatedLocation(latlngFilterResult.data[0]), false, 'it returns locations in the correct order')
 
     // Update location
     const updateResult = await request({
-      uri: `${uri}/${createResult.data.entity._id}`,
+      uri: `${uri}/${createResult.data.id}`,
       method: 'POST',
       body: {
         coordinates: [789, 101],
@@ -93,20 +93,20 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
       coordinates: [789, 101]
     }
 
-    t.deepEqual(updateResult.data.entity.location, expectedUpdatedLocation, 'updates location in database with correct location')
-    t.deepEqual(updateResult.data.entity.categories, [`${categoryId}`], 'does not update categories')
-    t.equal(updateResult.data.entity.address, 'number 5, remote place, bb7 9pz', 'does not update address')
-    t.equal(updateResult.data.entity.alias, 'new alias', 'updates location in database with correct alias')
+    t.deepEqual(updateResult.data.location, expectedUpdatedLocation, 'updates location in database with correct location')
+    t.deepEqual(updateResult.data.categories, [`${categoryId}`], 'does not update categories')
+    t.equal(updateResult.data.address, 'number 5, remote place, bb7 9pz', 'does not update address')
+    t.equal(updateResult.data.alias, 'new alias', 'updates location in database with correct alias')
 
     // Delete location
     await request({
-      uri: `${uri}/${createResult.data.entity._id}`,
+      uri: `${uri}/${createResult.data.id}`,
       method: 'DELETE'
     })
 
     const deleteResult = await request({ uri })
 
-    t.equal(deleteResult.data.entities.length, 1, 'deletes location from database')
+    t.equal(deleteResult.data.length, 1, 'deletes location from database')
   } catch (error) {
     t.fail(error)
   }

@@ -1,4 +1,4 @@
-const updateEntityById = (Entity) => async (id, fields) => {
+const updateEntityById = (Entity) => async ({ id, fields }) => {
   try {
     const entity = await Entity.findByIdAndUpdate(
       id,
