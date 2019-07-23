@@ -3,7 +3,7 @@ const { integrationTest } = require('./integration-test')
 const BASE_URL = 'http://localhost:5000'
 const uri = `${BASE_URL}/categories`
 
-const entityExists = id => entity => entity._id === `${id}`
+const entityExists = id => entity => entity.id === `${id}`
 
 integrationTest('Create, reads, updates and deletes categories', async (t, request) => {
   try {
@@ -30,23 +30,23 @@ integrationTest('Create, reads, updates and deletes categories', async (t, reque
       body: category
     })
 
-    t.equal(createResult.data.category.title, 'Second category title', 'creates category in database with correct title')
-    t.equal(createResult.data.category.slug, 'second', 'creates category in database with correct slug')
+    t.equal(createResult.data.title, 'Second category title', 'creates category in database with correct title')
+    t.equal(createResult.data.slug, 'second', 'creates category in database with correct slug')
 
     // Read categories
     const readResult = await request({ uri })
-    const createdCategoryId = createResult.data.category._id
+    const createdCategoryId = createResult.data.id
     const isCreatedCategory = entityExists(createdCategoryId)
 
-    t.equal(readResult.data.categories.length, 2, 'reads correct number of categories from database')
-    t.equal(readResult.data.categories.some(isCreatedCategory), true, 'created category is returned in list from database')
+    t.equal(readResult.data.length, 2, 'reads correct number of categories from database')
+    t.equal(readResult.data.some(isCreatedCategory), true, 'created category is returned in list from database')
 
     // Read category
     const readOneResult = await request({
       uri: `${uri}/${createdCategoryId}`
     })
 
-    t.equal(readOneResult.data.category.title, 'Second category title', 'reads single category from database')
+    t.equal(readOneResult.data.title, 'Second category title', 'reads single category from database')
 
     // Update category
     const updateResult = await request({
@@ -57,8 +57,8 @@ integrationTest('Create, reads, updates and deletes categories', async (t, reque
       }
     })
 
-    t.equal(updateResult.data.category.title, 'Updated second category title', 'updates category title')
-    t.equal(updateResult.data.category.slug, 'second', 'does not update category slug')
+    t.equal(updateResult.data.title, 'Updated second category title', 'updates category title')
+    t.equal(updateResult.data.slug, 'second', 'does not update category slug')
 
     // TODO Delete location
     // await request({
@@ -68,7 +68,7 @@ integrationTest('Create, reads, updates and deletes categories', async (t, reque
 
     // const deleteResult = await request({ uri })
 
-    // t.equal(deleteResult.data.categories.length, 1, 'deletes category from database')
+    // t.equal(deleteResult.data.length, 1, 'deletes category from database')
   } catch (error) {
     t.fail(error)
   }

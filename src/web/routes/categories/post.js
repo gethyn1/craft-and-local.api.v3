@@ -1,7 +1,9 @@
+const { buildSuccessResponse } = require('../build-responses')
+
 const createCategory = (service) => async (req, res, next) => {
   try {
     const result = await service.categories.create(req.body)
-    res.json(result)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }
@@ -9,8 +11,8 @@ const createCategory = (service) => async (req, res, next) => {
 
 const updateCategory = (service) => async (req, res, next) => {
   try {
-    const result = await service.categories.update(req.params.id, req.body)
-    res.json(result)
+    const result = await service.categories.updateById({ id: req.params.id, fields: req.body })
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }
