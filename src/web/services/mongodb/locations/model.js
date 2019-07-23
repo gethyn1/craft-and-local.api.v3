@@ -11,6 +11,7 @@ const pointSchema = new mongoose.Schema({
     type: [Number],
     min: [2, 'Coordinates must contain 2 points'],
     max: [2, 'Coordinates must contain 2 points'],
+    default: [0, 0],
     required: true
   },
   _id: false
@@ -36,12 +37,10 @@ const LocationSchema = mongoose.Schema({
     type: String
   },
   instagramHandle: {
-    type: String,
-    default: ''
+    type: String
   },
   twitterHandle: {
-    type: String,
-    default: ''
+    type: String
   },
   email: {
     type: String,
