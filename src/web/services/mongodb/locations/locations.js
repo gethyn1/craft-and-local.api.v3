@@ -39,7 +39,7 @@ const updateTransformations = {
   fields: transformFields
 }
 
-const update = compose(thenTransformEntity, updateLocationById, evolve(updateTransformations))
+const updateById = compose(thenTransformEntity, updateLocationById, evolve(updateTransformations))
 
 const findById = compose(thenTransformEntity, findEntityById(Location))
 
@@ -52,6 +52,6 @@ module.exports = {
   create,
   findById,
   find,
-  update,
+  updateById,
   removeById
 }
