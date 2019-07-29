@@ -17,6 +17,9 @@ const pointSchema = new mongoose.Schema({
   _id: false
 })
 
+// TO DO: add created and updated timestamp
+// TO DO: format telephone on save
+// TO DO: format website URL on save
 const LocationSchema = mongoose.Schema({
   location: {
     type: pointSchema,
