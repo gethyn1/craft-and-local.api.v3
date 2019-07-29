@@ -60,15 +60,14 @@ integrationTest('Create, reads, updates and deletes categories', async (t, reque
     t.equal(updateResult.data.title, 'Updated second category title', 'updates category title')
     t.equal(updateResult.data.slug, 'second', 'does not update category slug')
 
-    // TODO Delete location
-    // await request({
-    //   uri: `${uri}/${createdCategoryId}`,
-    //   method: 'DELETE'
-    // })
+    await request({
+      uri: `${uri}/${createdCategoryId}`,
+      method: 'DELETE'
+    })
 
-    // const deleteResult = await request({ uri })
+    const deleteResult = await request({ uri })
 
-    // t.equal(deleteResult.data.length, 1, 'deletes category from database')
+    t.equal(deleteResult.data.length, 1, 'deletes category from database')
   } catch (error) {
     t.fail(error)
   }
