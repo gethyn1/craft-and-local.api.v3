@@ -1,7 +1,9 @@
+const { buildSuccessResponse } = require('../build-responses')
+
 const deleteCategory = (service) => async (req, res, next) => {
   try {
-    await service.categories.removeById(req.params.id)
-    res.json(null)
+    const result = await service.categories.removeById(req.params.id)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }

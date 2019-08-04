@@ -11,7 +11,7 @@ const create = compose(thenTransformEntity, createEntity(Category))
 const findById = compose(thenTransformEntity, findEntityById(Category))
 const find = compose(thenTransformEntities, findEntities(Category))
 const updateById = compose(thenTransformEntity, updateEntityById(Category))
-const removeById = removeEntityById(Category)
+const removeById = compose(thenTransformEntity, removeEntityById(Category))
 
 module.exports = {
   create,
