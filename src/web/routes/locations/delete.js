@@ -1,7 +1,9 @@
+const { buildSuccessResponse } = require('../build-responses')
+
 const deleteLocation = (service) => async (req, res, next) => {
   try {
-    await service.locations.removeById(req.params.id)
-    res.json(null)
+    const result = await service.locations.removeById(req.params.id)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }

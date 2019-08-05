@@ -45,7 +45,7 @@ const findById = compose(thenTransformEntity, findEntityById(Location))
 
 const find = compose(thenTransformEntities, findEntities(Location, setConditions))
 
-const removeById = removeEntityById(Location)
+const removeById = compose(thenTransformEntity, removeEntityById(Location))
 
 module.exports = {
   transformFields,
