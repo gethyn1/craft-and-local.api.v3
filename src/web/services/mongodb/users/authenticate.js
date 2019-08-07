@@ -16,14 +16,7 @@ const authenticate = async ({ email, password }) => {
       throw new Error('Incorrect password')
     }
 
-    return {
-      // TODO move response http status up to routes
-      statusCode: 200,
-      status: 'success',
-      data: {
-        user: result
-      }
-    }
+    return result
   } catch (error) {
     // TO DO: abstract function for creating error messages
     throw new Error(error.errmsg || error.message)

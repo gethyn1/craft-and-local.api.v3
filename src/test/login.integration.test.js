@@ -21,7 +21,7 @@ integrationTest('Authenticates user with correct details', async (t, request) =>
       body: user
     })
 
-    t.equal(result.statusCode, 200, 'succesfully authenticates user')
+    t.equal(result.status, 'ok', 'succesfully authenticates user')
   } catch (error) {
     t.fail(error)
   }
