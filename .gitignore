@@ -31,3 +31,4 @@ node_modules/
 # OS / IDE
 .idea/
 .DS_Store
+.history
