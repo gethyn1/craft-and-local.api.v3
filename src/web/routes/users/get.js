@@ -1,7 +1,9 @@
+const { buildSuccessResponse } = require('../build-responses')
+
 const getUsers = (service) => async (req, res, next) => {
   try {
     const results = await service.users.find()
-    res.json(results)
+    res.json(buildSuccessResponse(results))
   } catch (error) {
     next(error)
   }
@@ -9,8 +11,8 @@ const getUsers = (service) => async (req, res, next) => {
 
 const getUser = (service) => async (req, res, next) => {
   try {
-    const result = await service.users.findOne(req.params.id)
-    res.json(result)
+    const result = await service.users.findById(req.params.id)
+    res.json(buildSuccessResponse(result))
   } catch (error) {
     next(error)
   }
