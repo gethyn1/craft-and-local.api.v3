@@ -11,7 +11,7 @@ const omitPassword = omit(['password'])
 
 const thenOmitPassword = then(omitPassword)
 
-const create = compose(thenTransformEntity, createEntity(User))
+const create = compose(thenOmitPassword, thenTransformEntity, createEntity(User))
 const findById = compose(thenOmitPassword, thenTransformEntity, findEntityById(User))
 const find = compose(then(map(omitPassword)), thenTransformEntities, findEntities(User))
 const updateById = compose(thenOmitPassword, thenTransformEntity, updateEntityById(User))
