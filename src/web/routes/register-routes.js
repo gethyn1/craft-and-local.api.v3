@@ -28,16 +28,16 @@ const authenticateUser = (req, res, next) => {
   }))
 }
 
-const setCsrfToken = (req, res, next) => {
+const setCsrfToken = (config) => (req, res, next) => {
   if (isFunction(req.csrfToken)) {
-    res.cookie('XSRF-TOKEN', req.csrfToken())
+    res.cookie('XSRF-TOKEN', req.csrfToken(), { domain: config.environment.COOKIE_DOMAIN })
   }
 
   next()
 }
 
 const registerRoutes = (config, app) => {
-  app.all('*', authenticateUser, setCsrfToken)
+  app.all('*', authenticateUser, setCsrfToken(config))
 
   locationsRoutes(config, app)
   producersRoutes(config, app)

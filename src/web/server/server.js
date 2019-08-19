@@ -25,6 +25,7 @@ const start = (config, app) => {
   app.use(bodyParser.urlencoded({ extended: false }))
 
   // TODO: only allow application/json content type
+  console.log('Enabling CORS for', config.environment.WEB_APP_ORIGIN)
   app.use(cors({
     origin: config.environment.WEB_APP_ORIGIN,
     allowedHeaders: 'Content-Type, X-Requested-With, CSRF-Token',
