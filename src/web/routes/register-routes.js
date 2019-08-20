@@ -1,4 +1,4 @@
-const { __, includes, compose, type, equals } = require('ramda')
+const { __, includes } = require('ramda')
 const { locationsRoutes } = require('./locations')
 const { producersRoutes } = require('./producers')
 const { categoriesRoutes } = require('./categories')
@@ -6,12 +6,11 @@ const { usersRoutes } = require('./users')
 const { authenticateRoutes } = require('./authenticate')
 const { wrapError } = require('./errors')
 const { UNAUTHORIZED } = require('./http-statuses')
+const { isFunction } = require('../../predicates')
 
 const unAuthenticatedRoutes = ['/authenticate/login', '/authenticate/validate']
 
 const isUnauthenticatedRoute = includes(__, unAuthenticatedRoutes)
-
-const isFunction = compose(equals('Function'), type)
 
 const authenticateUser = (req, res, next) => {
   if (isUnauthenticatedRoute(req.path)) {
