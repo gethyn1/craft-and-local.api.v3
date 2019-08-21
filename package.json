@@ -35,10 +35,14 @@
     "cross-env": "^5.2.0",
     "csurf": "^1.10.0",
     "dotenv": "^6.2.0",
+    "escape-html": "^1.0.3",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "helmet": "^3.15.0",
+    "js-string-escape": "^1.0.1",
+    "mongo-sanitize": "^1.0.1",
     "mongoose": "^5.4.10",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "validator": "^11.1.0"
   }
 }

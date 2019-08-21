@@ -43,6 +43,7 @@ function hashPassword (next) {
     return next()
   }
 
+  // argon2 generates the salt internally and stores it as part of the hashed string
   argon2.hash(user.password).then(hash => {
     user.password = hash
     next()

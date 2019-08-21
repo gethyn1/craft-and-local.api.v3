@@ -63,3 +63,35 @@ integrationTest('Does not authenticate user with incorrect password', async (t, 
   }
   t.end()
 })
+
+integrationTest('Returns error for invalid email', async (t, request) => {
+  try {
+    await request({
+      method: 'POST',
+      uri,
+      body: { ...user, email: 'notanemail' }
+    })
+
+    t.fail('Does not return error for invalid email')
+  } catch (error) {
+    t.equal(error.statusCode, 500, 'Returns correct status code')
+    t.equal(error.error.error, 'Email must be in a valid format', 'Returns correct error message')
+  }
+  t.end()
+})
+
+integrationTest('Returns error for empty password', async (t, request) => {
+  try {
+    await request({
+      method: 'POST',
+      uri,
+      body: { ...user, password: '' }
+    })
+
+    t.fail('Does not return error for empty password')
+  } catch (error) {
+    t.equal(error.statusCode, 500, 'Returns correct status code')
+    t.equal(error.error.error, 'Password must not be empty', 'Returns correct error message')
+  }
+  t.end()
+})
