@@ -51,7 +51,8 @@ const LocationSchema = mongoose.Schema({
     match: [/.+@.+\..+/, 'Please use a valid email address']
   },
   telephone: {
-    type: String
+    type: String,
+    trim: true
   },
   website: {
     type: String
