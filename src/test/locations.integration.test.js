@@ -14,7 +14,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
       uri,
       body: {
         title: 'Mama\'s little bakery',
-        coordinates: [123, 456],
+        coordinates: [41.8781, 87.6298],
         categories: [mongoose.Types.ObjectId()],
         address: 'Chicago, IL',
         alias: 'First Street'
@@ -26,7 +26,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
 
     const location = {
       title: 'The remote place',
-      coordinates: [789, 111],
+      coordinates: [53.7632, 2.7044],
       categories: [categoryId],
       address: 'number 5, remote place, bb7 9pz',
       alias: 'near the lake'
@@ -41,7 +41,7 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
 
     const expectedLocation = {
       type: 'Point',
-      coordinates: [789, 111]
+      coordinates: [53.7632, 2.7044]
     }
 
     t.deepEqual(createResult.data.location, expectedLocation, 'creates location in database with correct location')
@@ -83,14 +83,14 @@ integrationTest('Create, reads, updates and deletes location', async (t, request
       uri: `${uri}/${createResult.data.id}`,
       method: 'POST',
       body: {
-        coordinates: [789, 101],
+        coordinates: [52.7632, 3.7044],
         alias: 'new alias'
       }
     })
 
     const expectedUpdatedLocation = {
       type: 'Point',
-      coordinates: [789, 101]
+      coordinates: [52.7632, 3.7044]
     }
 
     t.deepEqual(updateResult.data.location, expectedUpdatedLocation, 'updates location in database with correct location')
