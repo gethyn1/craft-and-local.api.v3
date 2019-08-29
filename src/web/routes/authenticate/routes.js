@@ -1,5 +1,5 @@
 const { createMongoDBService } = require('../../services/mongodb')
-const { sanitizeBody } = require('../sanitize-input')
+const { sanitizeInput } = require('../sanitize-input')
 const { login } = require('./login')
 const { logout } = require('./logout')
 // TO DO: rename validate routes and controller to not clash with input validation
@@ -18,7 +18,7 @@ const validatePassword = [
 const authenticateRoutes = (config, app) => {
   const mongoDBService = createMongoDBService()
   app.get('/authenticate/validate', validate)
-  app.post('/authenticate/login', sanitizeBody, validateEmail, validatePassword, login(mongoDBService))
+  app.post('/authenticate/login', sanitizeInput, validateEmail, validatePassword, login(mongoDBService))
   app.post('/authenticate/logout', logout)
 }
 
