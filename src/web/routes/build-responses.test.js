@@ -1,5 +1,5 @@
 const test = require('tape')
-const { buildSuccessResponse } = require('./build-responses')
+const { buildSuccessResponse, buildErrorResponse } = require('./build-responses')
 
 test('buildSuccessResponse() builds a success response in the correct format for a single entity', (t) => {
   const data = {
@@ -47,6 +47,21 @@ test('buildSuccessResponse() builds a success response in the correct format for
         title: 'Captain Barney\'s Shellfish Stall'
       }
     ]
+  }
+
+  t.deepEqual(result, expected)
+  t.end()
+})
+
+test('buildErrorResponse() builds an error response in the correct format', (t) => {
+  const errors = ['first error', 'second error']
+
+  const result = buildErrorResponse(errors)
+
+  const expected = {
+    status: 'ok',
+    data: null,
+    errors
   }
 
   t.deepEqual(result, expected)
