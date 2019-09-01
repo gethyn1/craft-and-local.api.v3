@@ -9,3 +9,7 @@ module.exports.isObject = compose(equals('Object'), type)
 module.exports.isNumber = compose(equals('Number'), type)
 
 module.exports.isArray = compose(equals('Array'), type)
+
+module.exports.isUndefined = compose(equals('Undefined'), type)
+
+module.exports.isBoolean = compose(equals('Boolean'), type)

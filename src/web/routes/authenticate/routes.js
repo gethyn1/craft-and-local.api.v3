@@ -4,21 +4,22 @@ const { login } = require('./login')
 const { logout } = require('./logout')
 // TO DO: rename validate routes and controller to not clash with input validation
 const { validate } = require('./validate')
-const { validateProp, validatePropNot } = require('../validate')
+const { validateProp, handleValidationErrors } = require('../validate')
 
 const validateEmail = [
-  validateProp('isEmail', 'email', 'Email must be in a valid format')
+  validateProp({ validator: 'isEmail', field: 'email', message: 'Email must be in a valid format' }),
+  validateProp({ validator: 'isNotEmpty', field: 'password', message: 'Password must not be empty' })
 ]
 
 const validatePassword = [
-  validateProp('isString', 'password', 'Password must be a string'),
-  validatePropNot('isEmpty', 'password', 'Password must not be empty')
+  validateProp({ validator: 'isString', field: 'password', message: 'Password must be a string' }),
+  validateProp({ validator: 'isNotEmpty', field: 'password', message: 'Password must not be empty' })
 ]
 
 const authenticateRoutes = (config, app) => {
   const mongoDBService = createMongoDBService()
   app.get('/authenticate/validate', validate)
-  app.post('/authenticate/login', sanitizeInput, validateEmail, validatePassword, login(mongoDBService))
+  app.post('/authenticate/login', validateEmail, validatePassword, handleValidationErrors, sanitizeInput, login(mongoDBService))
   app.post('/authenticate/logout', logout)
 }
 
