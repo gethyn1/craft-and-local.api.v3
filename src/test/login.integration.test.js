@@ -74,8 +74,8 @@ integrationTest('Returns error for invalid email', async (t, request) => {
 
     t.fail('Does not return error for invalid email')
   } catch (error) {
-    t.equal(error.statusCode, 500, 'Returns correct status code')
-    t.equal(error.error.error, 'Email must be in a valid format', 'Returns correct error message')
+    t.equal(error.statusCode, 422, 'Returns correct status code')
+    t.equal(error.error.error, 'child "email" fails because ["email" must be a valid email]', 'Returns correct error message')
   }
   t.end()
 })
@@ -90,8 +90,8 @@ integrationTest('Returns error for empty password', async (t, request) => {
 
     t.fail('Does not return error for empty password')
   } catch (error) {
-    t.equal(error.statusCode, 500, 'Returns correct status code')
-    t.equal(error.error.error, 'Password must not be empty', 'Returns correct error message')
+    t.equal(error.statusCode, 422, 'Returns correct status code')
+    t.equal(error.error.error, 'child "password" fails because ["password" is not allowed to be empty]', 'Returns correct error message')
   }
   t.end()
 })

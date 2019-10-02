@@ -1,5 +1,7 @@
 const { buildSuccessResponse } = require('../build-responses')
 
+// TODO service could be renamed to repository
+// TODO potentially group model / repository with route
 const createLocation = (service) => async (req, res, next) => {
   try {
     const result = await service.locations.create(req.body)

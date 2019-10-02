@@ -1,4 +1,4 @@
-const { compose, omit, evolve } = require('ramda')
+const { compose } = require('ramda')
 const { Location } = require('./model')
 const { createEntity } = require('../create-entity')
 const { findEntityById } = require('../find-entity-by-id')
@@ -7,16 +7,6 @@ const { updateEntityById } = require('../update-entity-by-id')
 const { removeEntityById } = require('../remove-entity-by-id')
 const { excludeFilter, latlngFilter, mindistanceFilter, setFilter } = require('./filters')
 const { thenTransformEntities, thenTransformEntity } = require('../transform-result')
-
-const buildGeoJsonForCoordinates = coordinates => ({
-  type: 'Point',
-  coordinates
-})
-
-const transformFields = fields => ({
-  location: buildGeoJsonForCoordinates(fields.coordinates),
-  ...omit(['coordinates'], fields)
-})
 
 const setCategoryFilter = setFilter('categories')
 const setExcludeFilter = setFilter('exclude', excludeFilter)
@@ -31,15 +21,11 @@ const setConditions = ({ categories, exclude, latlng, mindistance }) =>
     setCategoryFilter(categories)
   )({})
 
-const create = compose(thenTransformEntity, createEntity(Location), transformFields)
+const create = compose(thenTransformEntity, createEntity(Location))
 
 const updateLocationById = updateEntityById(Location)
 
-const updateTransformations = {
-  fields: transformFields
-}
-
-const updateById = compose(thenTransformEntity, updateLocationById, evolve(updateTransformations))
+const updateById = compose(thenTransformEntity, updateLocationById)
 
 const findById = compose(thenTransformEntity, findEntityById(Location))
 
@@ -48,7 +34,6 @@ const find = compose(thenTransformEntities, findEntities(Location, setConditions
 const removeById = compose(thenTransformEntity, removeEntityById(Location))
 
 module.exports = {
-  transformFields,
   create,
   findById,
   find,
