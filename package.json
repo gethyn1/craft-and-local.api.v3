@@ -12,17 +12,20 @@
     "test": "npm run test:lint && npm run test:unit && npm run test:integration",
     "test:lint": "standard",
     "test:unit": "tape 'src/web/**/*.test.js' | tap-colorize",
-    "test:integration": "cross-env USE_CSRF_TOKEN=false tape 'src/test/**/*.integration.test.js' | tap-colorize"
+    "test:integration": "cross-env USE_CSRF_TOKEN=false tape 'src/test/**/*.integration.test.js' | tap-colorize",
+    "test:jest": "cross-env USE_CSRF_TOKEN=false jest 'src/web/routes/locations/test/integration-test.js' --verbose"
   },
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
+    "jest": "^24.9.0",
     "mongodb-memory-server": "^5.1.0",
     "nodemon": "^1.18.9",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "sinon": "^7.2.3",
     "standard": "^12.0.1",
+    "supertest": "^4.0.2",
     "tap-colorize": "^1.2.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.2"
