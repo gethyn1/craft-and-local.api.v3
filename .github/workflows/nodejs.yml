@@ -24,3 +24,11 @@ jobs:
         npm test
       env:
         CI: true
+        PORT: 5000
+        WEB_APP_ORIGIN: 'http://localhost:8080'
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+        USE_UNSECURE_COOKIE: 'true'
+        SESSION_ID_NAME: 'candlsid'
+        USE_CSRF_TOKEN: 'false'
+        COOKIE_DOMAIN: 'localhost'
+        USE_SESSION_PROXY: 'true'
