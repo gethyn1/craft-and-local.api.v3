@@ -8,7 +8,7 @@ const findEntities = (Entity, setConditions = setConditionsNoop) => async (query
 
     return entities
   } catch (error) {
-    throw new Error(error.errmsg)
+    throw error
   }
 }
 

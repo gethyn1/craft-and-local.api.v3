@@ -1,5 +1,11 @@
+const { handleInvalidId } = require('./handle-invalid-id')
+
 const findEntityById = (Entity) => async (id) => {
   try {
+    // TODO: unsure about calling this void function
+    // is there a more functional way of implementing?
+    handleInvalidId(id)
+
     const entity = await Entity
       .findById(id)
       .exec()
@@ -10,8 +16,7 @@ const findEntityById = (Entity) => async (id) => {
 
     return entity
   } catch (error) {
-    // TO DO: abstract function for creating error messages
-    throw new Error(error.errmsg || error.message)
+    throw error
   }
 }
 

@@ -1,5 +1,10 @@
+const { NOT_FOUND } = require('../../http-statuses')
+const { handleInvalidId } = require('./handle-invalid-id')
+
 const updateEntityById = (Entity) => async ({ id, fields }) => {
   try {
+    handleInvalidId(id)
+
     const entity = await Entity.findByIdAndUpdate(
       id,
       fields,
@@ -10,13 +15,14 @@ const updateEntityById = (Entity) => async ({ id, fields }) => {
     )
 
     if (!entity) {
-      throw new Error('No entity found')
+      const error = new Error(`No entity found for ID [${id}]`)
+      error.statusCode = NOT_FOUND
+      throw error
     }
 
     return entity
   } catch (error) {
-    // TO DO: abstract function for creating error messages
-    throw new Error(error.errmsg || error.message)
+    throw error
   }
 }
 

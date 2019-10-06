@@ -1,5 +1,5 @@
 const { __, includes } = require('ramda')
-const { UNAUTHORIZED } = require('../http-statuses')
+const { UNAUTHORIZED } = require('../../http-statuses')
 const { wrapError } = require('../errors')
 const { buildSuccessResponse } = require('../build-responses')
 

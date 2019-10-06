@@ -4,7 +4,7 @@ const { categoriesRoutes } = require('./categories')
 const { usersRoutes } = require('./users')
 const { authenticateRoutes } = require('./authenticate')
 const { wrapError } = require('./errors')
-const { UNAUTHORIZED } = require('./http-statuses')
+const { UNAUTHORIZED } = require('../http-statuses')
 const { isFunction } = require('../../predicates')
 
 const unAuthenticatedRoutes = ['/authenticate/login', '/authenticate/validate']

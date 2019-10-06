@@ -10,8 +10,7 @@ const findEntity = (Entity) => async (conditions) => {
 
     return entity
   } catch (error) {
-    // TO DO: abstract function for creating error messages
-    throw new Error(error.errmsg || error.message)
+    throw error
   }
 }
 

@@ -23,9 +23,7 @@ const setConditions = ({ categories, exclude, latlng, mindistance }) =>
 
 const create = compose(thenTransformEntity, createEntity(Location))
 
-const updateLocationById = updateEntityById(Location)
-
-const updateById = compose(thenTransformEntity, updateLocationById)
+const updateById = compose(thenTransformEntity, updateEntityById(Location))
 
 const findById = compose(thenTransformEntity, findEntityById(Location))
 

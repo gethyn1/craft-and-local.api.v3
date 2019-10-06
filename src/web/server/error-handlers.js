@@ -1,4 +1,5 @@
 const logErrors = (err, req, res, next) => {
+  // TODO: implement logger and turn off for testing
   console.error(err.stack)
   next(err)
 }

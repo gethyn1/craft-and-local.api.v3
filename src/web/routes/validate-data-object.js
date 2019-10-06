@@ -1,4 +1,4 @@
-const { UNPROCESSABLE_ENTITY } = require('./http-statuses')
+const { UNPROCESSABLE_ENTITY } = require('../http-statuses')
 
 const validateDataObject = (schema) => (obj) => {
   const { error, value } = schema.validate(obj)
