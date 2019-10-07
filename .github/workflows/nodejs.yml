@@ -32,3 +32,4 @@ jobs:
         USE_CSRF_TOKEN: 'false'
         COOKIE_DOMAIN: 'localhost'
         USE_SESSION_PROXY: 'true'
+        LOG_LEVEL: 'silent'

@@ -1,10 +1,11 @@
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+const { logger } = require('../../logger')
 
 const initialiseSession = (connection, config, app) => {
-  console.log('Initialising session for domain:', config.environment.COOKIE_DOMAIN)
-  console.log('Using unsecure session cookie:', config.environment.USE_UNSECURE_COOKIE)
-  console.log('Using session proxy:', config.environment.USE_SESSION_PROXY)
+  logger.info(`Initialising session for domain: ${config.environment.COOKIE_DOMAIN}`)
+  logger.info(`Using unsecure session cookie: ${config.environment.USE_UNSECURE_COOKIE}`)
+  logger.info(`Using session proxy: ${config.environment.USE_SESSION_PROXY}`)
 
   const sessionConfig = {
     store: new MongoStore({ mongooseConnection: connection }),

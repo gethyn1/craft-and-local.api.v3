@@ -7,11 +7,11 @@ const { initialiseSession } = require('./initialise-session')
 const { connectDatabase, disconnectDatabase } = require('./connect-database')
 const { registerRoutes } = require('../routes')
 const { registerErrorHandlers } = require('./error-handlers')
+const { logger } = require('../../logger')
 
 const listen = (config, app) =>
-  app.listen(config.server.PORT, () => console.log(
-    `App listening on port ${config.server.PORT}`)
-  )
+  app.listen(config.server.PORT, () =>
+    logger.info(`App listening on port ${config.server.PORT}`))
 
 // TO DO: sanitise all incoming data
 const start = (config, app) => {
@@ -25,7 +25,7 @@ const start = (config, app) => {
   app.use(bodyParser.urlencoded({ extended: false }))
 
   // TODO: only allow application/json content type
-  console.log('Enabling CORS for', config.environment.WEB_APP_ORIGIN)
+  logger.info(`Enabling CORS for ${config.environment.WEB_APP_ORIGIN}`)
   app.use(cors({
     origin: config.environment.WEB_APP_ORIGIN,
     allowedHeaders: 'Content-Type, X-Requested-With, CSRF-Token',
@@ -46,7 +46,7 @@ const initialise = async (config, app) => {
     server.once('close', disconnectDatabase)
     return server
   } catch (error) {
-    console.log(error)
+    logger.error(error)
   }
 }
 

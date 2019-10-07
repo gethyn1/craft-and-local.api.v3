@@ -7,5 +7,6 @@ module.exports = {
   USE_UNSECURE_COOKIE: toBoolean(process.env.USE_UNSECURE_COOKIE),
   USE_CSRF_TOKEN: toBoolean(process.env.USE_CSRF_TOKEN),
   COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
-  USE_SESSION_PROXY: toBoolean(process.env.USE_SESSION_PROXY)
+  USE_SESSION_PROXY: toBoolean(process.env.USE_SESSION_PROXY),
+  LOG_LEVEL: process.env.LOG_LEVEL
 }

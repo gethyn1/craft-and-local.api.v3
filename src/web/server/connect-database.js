@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
+const { logger } = require('../../logger')
 
 mongoose.Promise = global.Promise
 
-const onConnected = () => console.log('Mongo DB connected')
+const onConnected = () => logger.info('Mongo DB connected')
 
-const onDisconnected = () => console.log('Mongo DB disconnected')
+const onDisconnected = () => logger.info('Mongo DB disconnected')
 
-const onError = err => console.error(err)
+const onError = error => logger.error(error)
 
 process.on('SIGINT', () => {
   mongoose.connection.close(() => {
