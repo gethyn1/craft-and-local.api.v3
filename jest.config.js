@@ -3,5 +3,5 @@ const { defaults } = require('jest-config')
 module.exports = {
   ...defaults,
   testEnvironment: 'node',
-  testMatch: ['**/integration-test.js']
+  testMatch: ['<rootDir>/src/web/**/test/**/*.integration.test.js']
 }

@@ -1,31 +1,13 @@
 /* globals describe, it, beforeEach, afterEach, expect */
 const { MongoMemoryServer } = require('mongodb-memory-server')
 const mongoose = require('mongoose')
-const { assocPath } = require('ramda')
 const Promise = require('bluebird')
 const request = require('supertest')
 const express = require('express')
 const server = require('../../../server')
-const config = require('../../../../config')
-const { User } = require('../../../services/mongodb/users/model')
+const { getSidCookie, getTestConfig } = require('../../test/utils')
 const { Location } = require('../../../services/mongodb/locations/model')
 const { LOCATION_A, LOCATION_B, LOCATION_C, BAKERY_CATEGORY_ID } = require('./test-data')
-
-const getSidCookie = async (app) => {
-  // Seed database with user
-  const user = new User({ email: 'integration@test.com', password: 'test' })
-  await user.save()
-
-  // Login user and get session ID
-  const res = await request(app)
-    .post('/authenticate/login')
-    .set('Accept', 'application/json')
-    .send({ 'email': 'integration@test.com', 'password': 'test' })
-
-  return res.headers['set-cookie'].pop().split(';')[0]
-}
-
-const getTestConfig = ({ mongoUri }) => assocPath(['environment', 'MONGODB_URI'], mongoUri, config)
 
 describe('/locations', () => {
   let mongoServer
