@@ -2,10 +2,10 @@ const Joi = require('@hapi/joi')
 const { COORDINATES, ADDRESS, TITLE, DESCRIPTION, CATEGORIES, ALIAS, INSTAGRAM_HANDLE, TWITTER_HANDLE, EMAIL, TELEPHONE, WEBSITE } = require('./keys')
 
 const LOCATION_VALIDATION_KEYS = {
-  [COORDINATES]: Joi.array().ordered([
+  [COORDINATES]: Joi.array().ordered(
     Joi.number().min(-90).max(90).required(),
     Joi.number().min(-180).max(180).required()
-  ]),
+  ),
   [ADDRESS]: Joi.string().max(100),
   [TITLE]: Joi.string().min(1).max(50),
   [DESCRIPTION]: Joi.string().max(500),

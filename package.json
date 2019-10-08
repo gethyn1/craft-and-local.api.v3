@@ -13,7 +13,7 @@
     "test:lint": "standard",
     "test:unit": "tape 'src/web/**/*.test.js' | tap-colorize",
     "test:integration": "cross-env USE_CSRF_TOKEN=false tape 'src/test/**/*.integration.test.js' | tap-colorize",
-    "test:jest": "cross-env LOG_LEVEL=silent USE_CSRF_TOKEN=false jest --verbose"
+    "test:jest": "cross-env LOG_LEVEL=silent USE_CSRF_TOKEN=false jest --verbose --runInBand"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -32,7 +32,7 @@
     "tape": "^4.9.2"
   },
   "dependencies": {
-    "@hapi/joi": "^15.1.1",
+    "@hapi/joi": "^16.1.7",
     "argon2": "^0.21.0",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.3",

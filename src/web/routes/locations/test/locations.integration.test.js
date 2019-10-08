@@ -15,7 +15,6 @@ describe('/locations', () => {
   let Cookie
 
   beforeEach(async (done) => {
-    // Setup database and app (server)
     mongoServer = new MongoMemoryServer()
     const mongoUri = await mongoServer.getConnectionString()
     app = await server.initialise(getTestConfig({ mongoUri }), express())
@@ -165,7 +164,7 @@ describe('/locations', () => {
       expect(updated.length).toBe(1)
     })
 
-    it('should return 404 location does not exist', async () => {
+    it('should return 404 if location does not exist', async () => {
       const fields = { title: 'Papa\'s Big Bakery' }
       const ID = mongoose.Types.ObjectId()
       const res = await request(app).post(`/locations/${ID}`).set('Cookie', Cookie).send(fields)
