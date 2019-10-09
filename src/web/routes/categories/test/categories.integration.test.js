@@ -94,7 +94,7 @@ describe('/categories', () => {
   describe('POST /:id', () => {
     it('should update a category if it already exists', async () => {
       const category = new Category(CATEGORY_A)
-      category.save()
+      await category.save()
 
       const fields = { title: 'Butcher' }
       const res = await request(app).post(`/categories/${category._id}`).set('Cookie', Cookie).send(fields)

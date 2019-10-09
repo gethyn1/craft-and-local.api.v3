@@ -154,7 +154,7 @@ describe('/locations', () => {
   describe('POST /:id', () => {
     it('should update a location if it already exists', async () => {
       const location = new Location(LOCATION_A)
-      location.save()
+      await location.save()
 
       const fields = { title: 'Papa\'s Big Bakery' }
       const res = await request(app).post(`/locations/${location._id}`).set('Cookie', Cookie).send(fields)
