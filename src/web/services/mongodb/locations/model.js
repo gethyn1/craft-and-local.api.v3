@@ -61,6 +61,12 @@ const LocationSchema = mongoose.Schema({
 
 LocationSchema.index({ location: '2dsphere' })
 
+LocationSchema.post('find', async (docs) => {
+  for (let doc of docs) {
+    await doc.populate('categories').execPopulate()
+  }
+})
+
 module.exports = {
   Location: mongoose.model('Location', LocationSchema)
 }

@@ -88,6 +88,8 @@ describe('/locations', () => {
       const res = await request(app).get('/locations/1').set('Cookie', Cookie)
       expect(res.status).toBe(404)
     })
+
+    // TODO test that categories are populated
   })
 
   describe('POST /', () => {
