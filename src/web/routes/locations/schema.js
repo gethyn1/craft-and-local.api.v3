@@ -3,8 +3,8 @@ const { COORDINATES, ADDRESS, TITLE, DESCRIPTION, CATEGORIES, ALIAS, INSTAGRAM_H
 
 const LOCATION_VALIDATION_KEYS = {
   [COORDINATES]: Joi.array().ordered(
-    Joi.number().min(-90).max(90).required(),
-    Joi.number().min(-180).max(180).required()
+    Joi.number().min(-180).max(180).required(),
+    Joi.number().min(-90).max(90).required()
   ),
   [ADDRESS]: Joi.string().max(100),
   [TITLE]: Joi.string().min(1).max(50),

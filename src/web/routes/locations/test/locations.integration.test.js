@@ -94,7 +94,7 @@ describe('/locations', () => {
 
   describe('POST /', () => {
     it('should return 422 for invalid coordinates', async () => {
-      const invalidCoordinates = [[91, 181], [-91, -181], 'coordinates', ['coordinates', 'coordinates'], '80,100']
+      const invalidCoordinates = [[181, 91], [-181, -91], 'coordinates', ['coordinates', 'coordinates'], '80,100']
 
       await Promise.each(invalidCoordinates, async (coordinates) => {
         const location = { ...LOCATION_A, coordinates }
