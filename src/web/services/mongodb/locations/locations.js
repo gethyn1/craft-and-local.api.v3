@@ -5,20 +5,18 @@ const { findEntityById } = require('../find-entity-by-id')
 const { findEntities } = require('../find-entities')
 const { updateEntityById } = require('../update-entity-by-id')
 const { removeEntityById } = require('../remove-entity-by-id')
-const { excludeFilter, latlngFilter, mindistanceFilter, setFilter } = require('./filters')
-const { thenTransformEntities, thenTransformEntity, normaliseMongoDbProps } = require('../transform-result')
+const { excludeFilter, radiusFilter, setFilter } = require('./filters')
+const { thenTransformEntity, normaliseMongoDbProps } = require('../transform-result')
 
 const setCategoryFilter = setFilter('categories')
 const setExcludeFilter = setFilter('exclude', excludeFilter)
-const setLatlngFilter = setFilter('latlng', latlngFilter)
-const setMindistanceFilter = setFilter('mindistance', mindistanceFilter)
+const setRadiusFilter = setFilter('radius', radiusFilter)
 
-const setConditions = ({ categories, exclude, latlng, mindistance }) =>
+const setConditions = ({ categories, exclude, latlng, radius }) =>
   compose(
-    setMindistanceFilter(mindistance),
-    setLatlngFilter(latlng),
     setExcludeFilter(exclude),
-    setCategoryFilter(categories)
+    setCategoryFilter(categories),
+    setRadiusFilter({ latlng, radius })
   )({})
 
 // TODO unit test normaliseCategories
@@ -30,7 +28,11 @@ const updateById = compose(thenTransformEntity, updateEntityById(Location))
 
 const findById = compose(thenTransformEntity, findEntityById(Location))
 
-const find = compose(then(map(normaliseCategories)), thenTransformEntities, findEntities(Location, setConditions))
+const findTransformations = {
+  entities: map(normaliseCategories)
+}
+
+const find = compose(then(evolve(findTransformations)), findEntities(Location, setConditions))
 
 const removeById = compose(thenTransformEntity, removeEntityById(Location))
 

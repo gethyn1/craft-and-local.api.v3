@@ -28,6 +28,25 @@ const latlngFilter = (key, value, filters) => {
 
 const mindistanceFilter = (key, value, filters) => assocPath([...NEAR_PATH, '$minDistance'], value, filters)
 
+const maxdistanceFilter = (key, value, filters) => assocPath([...NEAR_PATH, '$maxDistance'], value, filters)
+
+const latlngStringToLnglat = compose(reverse, split(','))
+
+// https://docs.mongodb.com/manual/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/
+const kmToRadius = km => km / 6378.1
+
+const radiusFilter = (key, value, filters) => {
+  const { radius, latlng } = value
+
+  return (isNil(radius) || isNil(latlng))
+    ? filters
+    : assocPath(
+      ['location', '$geoWithin', '$centerSphere'],
+      [latlngStringToLnglat(latlng), kmToRadius(radius)],
+      filters
+    )
+}
+
 const setFilter = (key, fn = defaultFilter) => (value) => (filters) =>
   isNilOrEmpty(value) ? filters : fn(key, value, filters)
 
@@ -36,5 +55,7 @@ module.exports = {
   excludeFilter,
   latlngFilter,
   mindistanceFilter,
+  maxdistanceFilter,
+  radiusFilter,
   setFilter
 }
