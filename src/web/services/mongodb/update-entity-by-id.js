@@ -1,5 +1,6 @@
 const { NOT_FOUND } = require('../../http-statuses')
 const { handleInvalidId } = require('./handle-invalid-id')
+const { transformResult } = require('./transform-result')
 
 const updateEntityById = (Entity) => async ({ id, fields }) => {
   try {
@@ -20,7 +21,7 @@ const updateEntityById = (Entity) => async ({ id, fields }) => {
       throw error
     }
 
-    return entity
+    return transformResult(entity)
   } catch (error) {
     throw error
   }

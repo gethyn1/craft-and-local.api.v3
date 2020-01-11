@@ -1,3 +1,5 @@
+const { transformResult } = require('./transform-result')
+
 const findEntity = (Entity) => async (conditions) => {
   try {
     const entity = await Entity
@@ -8,7 +10,7 @@ const findEntity = (Entity) => async (conditions) => {
       throw new Error('No entity found for conditions', JSON.stringify(conditions))
     }
 
-    return entity
+    return transformResult(entity)
   } catch (error) {
     throw error
   }

@@ -6,7 +6,7 @@ const { findEntities } = require('../find-entities')
 const { updateEntityById } = require('../update-entity-by-id')
 const { removeEntityById } = require('../remove-entity-by-id')
 const { excludeFilter, radiusFilter, setFilter } = require('./filters')
-const { thenTransformEntity, normaliseMongoDbProps } = require('../transform-result')
+const { normaliseMongoDbProps } = require('../transform-result')
 
 const setCategoryFilter = setFilter('categories')
 const setExcludeFilter = setFilter('exclude', excludeFilter)
@@ -22,11 +22,11 @@ const setConditions = ({ categories, exclude, latlng, radius }) =>
 // TODO unit test normaliseCategories
 const normaliseCategories = evolve({ categories: map(normaliseMongoDbProps) })
 
-const create = compose(thenTransformEntity, createEntity(Location))
+const create = createEntity(Location)
 
-const updateById = compose(thenTransformEntity, updateEntityById(Location))
+const updateById = updateEntityById(Location)
 
-const findById = compose(thenTransformEntity, findEntityById(Location))
+const findById = findEntityById(Location)
 
 const findTransformations = {
   entities: map(normaliseCategories)
@@ -34,7 +34,7 @@ const findTransformations = {
 
 const find = compose(then(evolve(findTransformations)), findEntities(Location, setConditions))
 
-const removeById = compose(thenTransformEntity, removeEntityById(Location))
+const removeById = removeEntityById(Location)
 
 module.exports = {
   create,

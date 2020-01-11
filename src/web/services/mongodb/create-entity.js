@@ -1,7 +1,10 @@
+const { transformResult } = require('./transform-result')
+
 const createEntity = (Entity) => async (fields) => {
   try {
     const entity = new Entity(fields)
-    return entity.save()
+    const result = await entity.save()
+    return transformResult(result)
   } catch (error) {
     throw error
   }

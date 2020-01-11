@@ -1,4 +1,5 @@
 const { handleInvalidId } = require('./handle-invalid-id')
+const { transformResult } = require('./transform-result')
 
 const findEntityById = (Entity) => async (id) => {
   try {
@@ -14,7 +15,7 @@ const findEntityById = (Entity) => async (id) => {
       throw new Error('No entity found for ID')
     }
 
-    return entity
+    return transformResult(entity)
   } catch (error) {
     throw error
   }
