@@ -38,7 +38,6 @@ describe('/locations', () => {
       expect(res.body.data.some(l => l.title === 'Mama\'s Little Bakery')).toBeTruthy()
       expect(res.body.data.some(l => l.title === 'The Remote Bakery')).toBeTruthy()
       expect(res.body.data.some(l => l.title === 'The Organic Turnip Co')).toBeTruthy()
-      expect(res.body.meta.totalCount).toBe(3)
     })
 
     it('should limit number of locations returned', async () => {
@@ -49,7 +48,6 @@ describe('/locations', () => {
       expect(res.body.data.length).toBe(2)
       expect(res.body.data.some(l => l.title === 'Mama\'s Little Bakery')).toBeTruthy()
       expect(res.body.data.some(l => l.title === 'The Remote Bakery')).toBeTruthy()
-      expect(res.body.meta.totalCount).toBe(3)
     })
 
     it('should return all locations by category', async () => {
@@ -60,7 +58,6 @@ describe('/locations', () => {
       expect(res.body.data.length).toBe(2)
       expect(res.body.data.some(l => l.title === 'Mama\'s Little Bakery')).toBeTruthy()
       expect(res.body.data.some(l => l.title === 'The Remote Bakery')).toBeTruthy()
-      expect(res.body.meta.totalCount).toBe(2)
     })
 
     it('should return no locations if category has no related locations', async () => {
@@ -70,7 +67,6 @@ describe('/locations', () => {
 
       expect(res.status).toBe(200)
       expect(res.body.data.length).toBe(0)
-      expect(res.body.meta.totalCount).toBe(0)
     })
 
     it('should exclude location by ID', async () => {
@@ -81,7 +77,6 @@ describe('/locations', () => {
       expect(res.status).toBe(200)
       expect(res.body.data.length).toBe(2)
       expect(res.body.data.find(l => l.title === locationToExclude.title)).toBeFalsy()
-      expect(res.body.meta.totalCount).toBe(2)
     })
 
     // TODO: min distance query (relies on defining exact locations in test data)

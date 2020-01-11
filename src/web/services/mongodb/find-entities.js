@@ -16,14 +16,7 @@ const findEntities = (Entity, setConditions = setConditionsNoop) => async (query
       .limit(limit)
       .exec()
 
-    const totalCount = await Entity
-      .countDocuments(queryConditions)
-      .exec()
-
-    return {
-      entities: entities.map(transformResult),
-      totalCount
-    }
+    return entities.map(transformResult)
   } catch (error) {
     throw error
   }

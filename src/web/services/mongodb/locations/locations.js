@@ -5,18 +5,20 @@ const { findEntityById } = require('../find-entity-by-id')
 const { findEntities } = require('../find-entities')
 const { updateEntityById } = require('../update-entity-by-id')
 const { removeEntityById } = require('../remove-entity-by-id')
-const { excludeFilter, radiusFilter, setFilter } = require('./filters')
+const { excludeFilter, latlngFilter, mindistanceFilter, setFilter } = require('./filters')
 const { normaliseMongoDbProps } = require('../transform-result')
 
 const setCategoryFilter = setFilter('categories')
 const setExcludeFilter = setFilter('exclude', excludeFilter)
-const setRadiusFilter = setFilter('radius', radiusFilter)
+const setLatlngFilter = setFilter('latlng', latlngFilter)
+const setMindistanceFilter = setFilter('mindistance', mindistanceFilter)
 
-const setConditions = ({ categories, exclude, latlng, radius }) =>
+const setConditions = ({ categories, exclude, latlng, mindistance }) =>
   compose(
+    setMindistanceFilter(mindistance),
+    setLatlngFilter(latlng),
     setExcludeFilter(exclude),
-    setCategoryFilter(categories),
-    setRadiusFilter({ latlng, radius })
+    setCategoryFilter(categories)
   )({})
 
 // TODO unit test normaliseCategories
