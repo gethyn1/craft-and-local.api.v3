@@ -5,17 +5,19 @@ const { findEntityById } = require('../find-entity-by-id')
 const { findEntities } = require('../find-entities')
 const { updateEntityById } = require('../update-entity-by-id')
 const { removeEntityById } = require('../remove-entity-by-id')
-const { excludeFilter, latlngFilter, mindistanceFilter, setFilter } = require('./filters')
+const { excludeFilter, latlngFilter, mindistanceFilter, maxdistanceFilter, setFilter } = require('./filters')
 const { normaliseMongoDbProps } = require('../transform-result')
 
 const setCategoryFilter = setFilter('categories')
 const setExcludeFilter = setFilter('exclude', excludeFilter)
 const setLatlngFilter = setFilter('latlng', latlngFilter)
 const setMindistanceFilter = setFilter('mindistance', mindistanceFilter)
+const setMaxdistanceFilter = setFilter('maxdistance', maxdistanceFilter)
 
-const setConditions = ({ categories, exclude, latlng, mindistance }) =>
+const setConditions = ({ categories, exclude, latlng, mindistance, maxdistance }) =>
   compose(
     setMindistanceFilter(mindistance),
+    setMaxdistanceFilter(maxdistance),
     setLatlngFilter(latlng),
     setExcludeFilter(exclude),
     setCategoryFilter(categories)
