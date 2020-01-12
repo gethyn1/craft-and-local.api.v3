@@ -30,11 +30,7 @@ const updateById = updateEntityById(Location)
 
 const findById = findEntityById(Location)
 
-const findTransformations = {
-  entities: map(normaliseCategories)
-}
-
-const find = compose(then(evolve(findTransformations)), findEntities(Location, setConditions))
+const find = compose(then(map(normaliseCategories)), findEntities(Location, setConditions))
 
 const removeById = removeEntityById(Location)
 
