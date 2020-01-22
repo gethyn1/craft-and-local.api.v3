@@ -17,6 +17,7 @@ const excludeFilter = (key, value, filters) => ({
   }
 })
 
+// Returns sorted results but can't use Mongo DB countDocuments()
 const latlngFilter = (key, value, filters) => {
   const lnglat = compose(reverse, split(','))(value)
 
@@ -35,6 +36,7 @@ const latlngStringToLnglat = compose(reverse, split(','))
 // https://docs.mongodb.com/manual/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/
 const kmToRadius = km => km / 6378.1
 
+// Allows Mongo DB countDocuments() but returns unsorted
 const radiusFilter = (key, value, filters) => {
   const { radius, latlng } = value
 
