@@ -16,7 +16,10 @@ const findEntities = (Entity, setConditions = setConditionsNoop) => async (query
       .limit(limit)
       .exec()
 
-    return entities.map(transformResult)
+    return {
+      entities: entities.map(transformResult),
+      isLastPage: entities.length < limit
+    }
   } catch (error) {
     throw error
   }
